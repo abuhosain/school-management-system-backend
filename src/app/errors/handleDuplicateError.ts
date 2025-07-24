@@ -6,7 +6,6 @@ export const handleDuplicateError = (err: any): TGenericErrorResponse => {
   const errorSources: TErrorSources = [
     {
       path: '',
-
       message: err.message,
     },
   ];
