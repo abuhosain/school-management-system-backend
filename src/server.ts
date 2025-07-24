@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import config from "./config";
 
-let server: any;
+let server: ReturnType<typeof app.listen> | undefined;
 
 async function main() {
   try {
