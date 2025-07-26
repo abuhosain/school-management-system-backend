@@ -1,9 +1,10 @@
+import { Types } from 'mongoose';
 import { z } from 'zod';
-
+const objectId = z.instanceof(Types.ObjectId);
 export const departmentZodSchema = z.object({
   body: z.object({
     name: z.string().min(1, 'Department name is required'),
-    organization: z.string().min(1, 'Organization ID is required'), // should be ObjectId string
+    organization: objectId,
   }),
 });
 
