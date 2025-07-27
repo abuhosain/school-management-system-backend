@@ -16,3 +16,14 @@ const adminZodSchema = z.object({
     join_date: z.date().optional(),
   }),
 });
+
+export const createAdminZodSchema = adminZodSchema;
+export const updateAdminZodSchema = z.object({
+  body: adminZodSchema.shape.body.partial(),
+});
+
+
+// Types
+export type AdminInput = z.infer<typeof adminZodSchema>;
+export type CreateAdminInput = z.infer<typeof createAdminZodSchema>;
+export type UpdateAdminInput = z.infer<typeof updateAdminZodSchema>;
