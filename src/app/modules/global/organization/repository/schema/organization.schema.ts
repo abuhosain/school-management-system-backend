@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { IOrganization } from '../../interface/organization.interface';
 
-const planTypes = ['monthly', 'lifetime'] as const;
+const planTypes = ['monthly', 'lifetime', 'yearly'] as const;
 const subscriptionStatuses = ['active', 'expired'] as const;
 
 const organizationSchema = new Schema<IOrganization>(
@@ -29,8 +29,7 @@ const organizationSchema = new Schema<IOrganization>(
       enum: subscriptionStatuses,
       required: true,
     },
-    createdAt: { type: Date, default: Date.now },
-    expire_at: { type: Date, required: false },
+    expire_at: { type: Date },
   },
   {
     timestamps: true,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const planTypeEnum = z.enum(['monthly', 'lifetime']);
+export const planTypeEnum = z.enum(['monthly', 'lifetime', 'yearly']);
 export const subscriptionStatusEnum = z.enum(['active', 'expired']);
 
 export const organizationZodSchema = z.object({

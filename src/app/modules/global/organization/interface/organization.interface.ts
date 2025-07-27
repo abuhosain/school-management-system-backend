@@ -1,4 +1,4 @@
-export type PlanType = 'monthly' | 'lifetime';
+export type PlanType = 'monthly' | 'lifetime' | 'yearly';
 export type SubscriptionStatus = 'active' | 'expired';
 
 export interface IOrganization {
