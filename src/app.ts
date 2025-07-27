@@ -3,6 +3,7 @@ import cors from 'cors';
 import cockieParser from 'cookie-parser';
 import notFound from './app/middleware/notFound';
 import globalErrorHandler from './app/middleware/globalErrorHandlers';
+import router from './app/routes/routes';
 
 const app: Application = express();
 
@@ -14,7 +15,7 @@ const allowedOrigins = ['http://localhost:3000'];
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // application routes
-// app.use('/api', router)
+app.use('/api', router)
 
 // Test route
 app.get('/', async (req: Request, res: Response) => {
