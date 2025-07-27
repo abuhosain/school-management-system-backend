@@ -6,7 +6,6 @@ const objectId = z.instanceof(Types.ObjectId);
 const superAdminZodSchema = z.object({
   body: z.object({
     user: objectId,
-    organization: objectId,
     name: z.string().min(1, 'Name is required'),
     email: z.string().email('Invalid email format').min(1, 'Email is required'),
   }),

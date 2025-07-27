@@ -11,7 +11,7 @@ export const userZodSchema = z.object({
         USER_ROLE.admin,
         USER_ROLE.student,
         USER_ROLE.teacher,
-        USER_ROLE.staf,
+        USER_ROLE.staff,
       ])
       .default(USER_ROLE.student),
     is_deleted: z.boolean().optional().default(false),

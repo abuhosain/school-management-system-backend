@@ -3,5 +3,5 @@ export const USER_ROLE = {
   admin: 'Admin',
   student: 'Student',
   teacher: 'Teacher',
-  staf: 'Staff',
+  staff: 'Staff',
 } as const;
