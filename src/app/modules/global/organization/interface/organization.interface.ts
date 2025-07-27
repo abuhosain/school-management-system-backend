@@ -5,6 +5,9 @@ export interface IOrganization {
   name: string;
   subdomain: string;
   customdomain: string;
+  email: string;
+  phone: number;
+  address: string;
   plan_type: PlanType;
   subscription_status: SubscriptionStatus;
   createdAt?: Date;

@@ -14,6 +14,12 @@ export const organizationZodSchema = z.object({
         'Subdomain can only contain lowercase letters, numbers and hyphens',
       ),
     customdomain: z.string().url().optional(),
+    email: z.string().email('Invalid email format'),
+    phone: z
+      .number()
+      .int('Phone number must be an integer')
+      .min(1000000000, 'Phone number must be at least 10 digits'),
+    address: z.string().min(1, 'Address is required'),
     plan_type: planTypeEnum,
     subscription_status: subscriptionStatusEnum,
     createdAt: z.date().optional(),
