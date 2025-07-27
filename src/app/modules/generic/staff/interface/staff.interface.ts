@@ -1,8 +1,13 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export interface IStaff {
   user: Types.ObjectId;
   organization: Types.ObjectId;
   designation: string;
-  join_date: Date;
+  name: string;
+  email: string;
+  phone: number;
+  ephone: number;
+  profilePicture?: string;
+  join_date?: Date;
 }
