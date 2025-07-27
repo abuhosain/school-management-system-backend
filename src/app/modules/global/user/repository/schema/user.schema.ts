@@ -6,13 +6,9 @@ import config from '../../../../../../config';
 
 const userSchema = new Schema<IUser>(
   {
-    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: USER_ROLE, default: 'Student' },
-    profile_image: { type: String, required: false },
-    phone: { type: String, required: true },
-    emergency_number: { type: String, required: true },
     is_deleted: { type: Boolean, default: false },
     is_blocked: { type: Boolean, default: false },
   },
@@ -38,7 +34,7 @@ userSchema.pre('save', async function (next) {
     );
     next();
   } catch (error: any) {
-    return next(error);  
+    return next(error);
   }
 });
 
@@ -49,7 +45,7 @@ userSchema.statics.isUserExistsByEmail = async function (email: string) {
 
 // Set password to an empty string after saving for security
 userSchema.post('save', function (doc, next) {
-  doc.password = '';  
+  doc.password = '';
   next();
 });
 
