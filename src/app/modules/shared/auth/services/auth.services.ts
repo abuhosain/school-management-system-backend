@@ -36,7 +36,7 @@ export const createOrganization = async (organization: IOrganization) => {
 
     switch (organization.plan_type) {
       case 'monthly':
-        expire_at = dayjs(now).add(30, 'day').toDate();  
+        expire_at = dayjs(now).add(30, 'day').toDate();
         break;
       case 'yearly':
         expire_at = dayjs(now).add(1, 'year').toDate();
@@ -54,7 +54,7 @@ export const createOrganization = async (organization: IOrganization) => {
       expire_at,
     };
 
-    const password = organization?.customdomain;
+    const password = 'Hosain25';
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const userData = {
