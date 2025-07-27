@@ -7,6 +7,8 @@ export interface IUser {
   email: string;
   password: string;
   role: UserRole;
+  name: string;
+  profilePicture?: string;
   is_deleted: boolean;
   is_blocked: boolean;
   createdAt?: Date;

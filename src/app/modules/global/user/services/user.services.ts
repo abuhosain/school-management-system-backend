@@ -22,6 +22,8 @@ const createStudent = async (studentData: IStudent, file: TImageFile) => {
     email: studentData.email,
     password: hashedPassword,
     role: USER_ROLE.student,
+    name: studentData.name,
+    profilePicture: file?.path,
   };
 
   const user = await User.create(userData);

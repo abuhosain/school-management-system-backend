@@ -7,6 +7,7 @@ import { User } from '../../../global/user/repository/schema/user.schema';
 import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import dayjs from 'dayjs';
+import { USER_ROLE } from '../../../global/user/user.constance';
 
 export const createOrganization = async (organization: IOrganization) => {
   const session = await mongoose.startSession();
@@ -61,7 +62,9 @@ export const createOrganization = async (organization: IOrganization) => {
     const userData = {
       email: organization.email,
       password: hashedPassword,
-      role: 'Admin',
+      role: USER_ROLE.admin,
+      name: organization.name,
+      profilePicture: '',
     };
 
     // Step 1: Create organization with expire_at
@@ -98,8 +101,6 @@ export const createOrganization = async (organization: IOrganization) => {
     throw error;
   }
 };
-
-
 
 export const AuthServices = {
   createOrganization,
