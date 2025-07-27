@@ -1,16 +1,11 @@
 import { model, Schema } from "mongoose";
-import { IAdmin } from "../../interface/admin.interface";
+import { ISuperAdmin } from "../../interface/super-admin.interface";
 
-const adminSchema = new Schema<IAdmin>({
+const superAdminSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   organization: {
     type: Schema.Types.ObjectId,
     ref: 'Organization',
-    required: true,
-  },
-  department: {
-    type: Schema.Types.ObjectId,
-    ref: 'Department',
     required: true,
   },
   name: { type: String, required: true, trim: true },
@@ -23,5 +18,5 @@ const adminSchema = new Schema<IAdmin>({
   timestamps: true,
   versionKey: false,
 });
-
-export const Admin = model<IAdmin>('Admin', adminSchema);
+ 
+export const SuperAdmin = model<ISuperAdmin>('SuperAdmin', superAdminSchema);

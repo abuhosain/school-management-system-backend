@@ -1,9 +1,8 @@
-import { Types } from 'mongoose';
+import { Types } from "mongoose";
 
-export interface IAdmin {
+export interface ISuperAdmin {
   user: Types.ObjectId;
   organization: Types.ObjectId;
-  department: Types.ObjectId;
   name: string;
   email: string;
   phone: number;
