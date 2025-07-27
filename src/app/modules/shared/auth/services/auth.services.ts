@@ -16,8 +16,9 @@ export const createOrganization = async (organization: IOrganization) => {
     const existingOrganization = await Organization.findOne(
       {
         $or: [
-          { customdomain: organization.customdomain },
-          { subdomain: organization.subdomain },
+          { customdomain: organization?.customdomain },
+          { subdomain: organization?.subdomain },
+          { email: organization?.email },
         ],
       },
       { session },
@@ -26,7 +27,7 @@ export const createOrganization = async (organization: IOrganization) => {
     if (existingOrganization) {
       throw new AppError(
         httpStatus.FOUND,
-        'Organization with this subdomain or custom domain already exists',
+        'Organization with this email, subdomain or custom domain already exists',
       );
     }
 
@@ -97,6 +98,8 @@ export const createOrganization = async (organization: IOrganization) => {
     throw error;
   }
 };
+
+
 
 export const AuthServices = {
   createOrganization,
