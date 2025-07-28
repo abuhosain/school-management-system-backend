@@ -8,6 +8,8 @@ import bcrypt from 'bcrypt';
 import { Student } from '../../../generic/student/repository/schema/student.schema';
 import { TImageFile } from '../../../../interface/image.interface';
 import { JwtPayload } from 'jsonwebtoken';
+import { ITeacher } from '../../../generic/teacher/inteface/tacher.interface';
+import { Teacher } from '../../../generic/teacher/repository/schema/teacher.schema';
 
 const createStudent = async (
   user: JwtPayload,
@@ -64,6 +66,64 @@ const createStudent = async (
   }
 };
 
+const createTeacher = async (
+  user: JwtPayload,
+  teacherData: ITeacher,
+  file: TImageFile,
+) => {
+  const session = await mongoose.startSession();
+  const { organization } = user;
+  try {
+    session.startTransaction();
+
+    const isExistingTeacher = await User.isUserExistsByEmail(
+      teacherData?.email,
+    );
+    if (isExistingTeacher) {
+      throw new AppError(
+        httpStatus.CONFLICT,
+        'Teacher with this email already exists',
+      );
+    }
+
+    const password = teacherData?.email;
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const userData = {
+      email: teacherData.email,
+      password: hashedPassword,
+      role: USER_ROLE.student,
+      name: teacherData.name,
+      profilePicture: file?.path,
+      organization: organization,
+    };
+
+    const user = await User.create([userData], { session });
+
+    const teacher = await Teacher.create(
+      [
+        {
+          ...teacherData,
+          user: user[0]._id,
+          profilePicture: file?.path,
+          organization: organization,
+        },
+      ],
+      { session },
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return teacher[0];
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};
+
 export const UserServices = {
   createStudent,
+  createTeacher,
 };

@@ -6,9 +6,13 @@ import httpStatus from 'http-status';
 
 const createStudent = catchAsync(async (req, res) => {
   const user = req.user;
-  const organization = req.body;
+  const student = req.body;
   const file: any = req.file;
-  const result = await UserServices.createStudent(user as JwtPayload, organization, file);
+  const result = await UserServices.createStudent(
+    user as JwtPayload,
+    student,
+    file,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -17,6 +21,24 @@ const createStudent = catchAsync(async (req, res) => {
   });
 });
 
+const createTeacher = catchAsync(async (req, res) => {
+  const user = req.user;
+  const teacher = req.body;
+  const file: any = req.file;
+  const result = await UserServices.createTeacher(
+    user as JwtPayload,
+    teacher,
+    file,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Teacher created successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createStudent,
+  createTeacher,
 };
