@@ -11,4 +11,9 @@ router.post(
   DepartmentController.createDepartment,
 );
 
+router.get(
+  'all-department/:id', 
+  DepartmentController.getAllDepartmentByOrganizationId,
+);
+
 export const DepartmentRoutes = router;

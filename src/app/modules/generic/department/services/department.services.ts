@@ -35,6 +35,12 @@ const createDepartment = async (user: JwtPayload, department: IDepartment) => {
   return newDepartment;
 };
 
+const getAllDepartmentByOrgnazationId = async (id: string) => {
+  const result = await Department.findById(id);
+  return result;
+};
+
 export const DepartmentServices = {
   createDepartment,
+  getAllDepartmentByOrgnazationId,
 };
