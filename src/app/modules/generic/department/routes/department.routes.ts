@@ -12,8 +12,14 @@ router.post(
 );
 
 router.get(
-  'all-department/:id', 
+  'all-department/:id',
   DepartmentController.getAllDepartmentByOrganizationId,
+);
+
+router.get(
+  '/all-department',
+  auth(USER_ROLE.admin, USER_ROLE.teacher),
+  DepartmentController.getAllDepartment,
 );
 
 export const DepartmentRoutes = router;

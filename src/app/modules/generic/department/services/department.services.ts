@@ -40,7 +40,14 @@ const getAllDepartmentByOrgnazationId = async (id: string) => {
   return result;
 };
 
+const getAllDepartment = async () => {
+  const result = await Department.find();
+  return result;
+}
+
+
 export const DepartmentServices = {
   createDepartment,
   getAllDepartmentByOrgnazationId,
+  getAllDepartment,
 };
