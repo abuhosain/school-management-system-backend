@@ -15,6 +15,7 @@ import {
 import { createToken, verifyToken } from '../auth.utils';
 import config from '../../../../../config';
 import { JwtPayload } from 'jsonwebtoken';
+import { sendEmail } from '../../../../utils/sendEmails';
 
 const createOrganization = async (organization: IOrganization) => {
   const session = await mongoose.startSession();
@@ -256,9 +257,49 @@ const refreshToken = async (token: string) => {
   };
 };
 
+const forgetPassword = async (userEmail: string) => {
+  const user = await User.isUserExistsByEmail(userEmail);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found !');
+  }
+  const isDeleted = user?.is_deleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted ! !');
+  }
+
+  const userStatus = user?.is_blocked;
+
+  if (userStatus === true) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is blocked !');
+  }
+
+  const jwtPayload: any = {
+    id: user?._id,
+    email: user?.email,
+    role: user?.role,
+    name: user?.name,
+    profilePicture: user?.profilePicture,
+  };
+
+  const resetToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expire_in as string,
+  );
+
+  const resetUILink = `${config.reset_pass_ui_link}/reset-password?email=${user.email}&token=${resetToken}`;
+
+  sendEmail(user.email, resetUILink);
+
+  // console.log(resetUILink);
+};
+
 export const AuthServices = {
   createOrganization,
   loginUser,
   changePassword,
   refreshToken,
+  forgetPassword,
 };
