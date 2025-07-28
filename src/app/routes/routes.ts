@@ -3,6 +3,7 @@ import { AuthRoutes } from '../modules/shared/auth/routes/auth.routes';
 import { DepartmentRoutes } from '../modules/generic/department/routes/department.routes';
 import { UserRoutes } from '../modules/global/user/routes/user.routes';
 import { StudentRoutes } from '../modules/generic/student/routes/student.routes';
+import { TeacherRoutes } from '../modules/generic/teacher/routes/teacher.routes';
 
 const router = Router();
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: '/student',
     route: StudentRoutes,
+  },
+  {
+    path: '/teacher',
+    route: TeacherRoutes,
   },
 ];
 

@@ -12,7 +12,7 @@ const getSingleStuent = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Student retrieved successfully',
-    data: null,
+    data: student,
   });
 });
 
@@ -22,7 +22,7 @@ const getAllStuent = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Student retrieved successfully',
-    data: null,
+    data: student,
   });
 });
 
@@ -33,7 +33,7 @@ const getAllStuentByOrganization = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Students retrieved successfully',
-    data: null,
+    data: student,
   });
 });
 
