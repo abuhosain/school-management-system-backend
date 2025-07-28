@@ -22,4 +22,6 @@ router.get(
   DepartmentController.getAllDepartment,
 );
 
+router.get('/:id', DepartmentController.getSingleDepartment);
+
 export const DepartmentRoutes = router;

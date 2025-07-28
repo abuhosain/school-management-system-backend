@@ -40,8 +40,20 @@ const getAllDepartment = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleDepartment = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await DepartmentServices.getSingleDepartment(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Department fetched successfully!',
+    data: result,
+  });
+});
+
 export const DepartmentController = {
   createDepartment,
   getAllDepartmentByOrganizationId,
   getAllDepartment,
+  getSingleDepartment,
 };

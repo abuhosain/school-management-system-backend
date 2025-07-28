@@ -43,11 +43,19 @@ const getAllDepartmentByOrgnazationId = async (id: string) => {
 const getAllDepartment = async () => {
   const result = await Department.find();
   return result;
-}
+};
 
+const getSingleDepartment = async (id: string) => {
+  const result = await Department.findById(id);
+  if (!result) {
+    throw new Error('Department not found');
+  }
+  return result;
+};
 
 export const DepartmentServices = {
   createDepartment,
   getAllDepartmentByOrgnazationId,
   getAllDepartment,
+  getSingleDepartment,
 };
