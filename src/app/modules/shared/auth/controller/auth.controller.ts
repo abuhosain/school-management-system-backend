@@ -3,6 +3,7 @@ import catchAsync from '../../../../utils/catchAsynch';
 import sendResponse from '../../../../utils/sendResponse';
 import { AuthServices } from '../services/auth.services';
 import httpStatus from 'http-status';
+import AppError from '../../../../errors/AppError';
 
 const createOrganization = catchAsync(async (req, res) => {
   const organization = req.body;
@@ -60,10 +61,25 @@ const forgetPassword = catchAsync(async (req, res) => {
   });
 });
 
+const resetPassword = catchAsync(async (req, res) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Token is required for password reset');
+  }
+  const result = await AuthServices.resetPassword(req.body, token);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password reset succesfully!',
+    data: result,
+  });
+});
+
 export const AuthController = {
   createOrganization,
   loginUser,
   changePassword,
   refreshToken,
   forgetPassword,
+  resetPassword,
 };

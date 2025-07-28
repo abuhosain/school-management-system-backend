@@ -14,7 +14,7 @@ import {
 } from '../../../global/user/interface/user.interface';
 import { createToken, verifyToken } from '../auth.utils';
 import config from '../../../../../config';
-import { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { sendEmail } from '../../../../utils/sendEmails';
 
 const createOrganization = async (organization: IOrganization) => {
@@ -296,10 +296,61 @@ const forgetPassword = async (userEmail: string) => {
   // console.log(resetUILink);
 };
 
+const resetPassword = async (
+  payload: { email: string; newPassword: string },
+  token: string,
+) => {
+  const user = await User.isUserExistsByEmail(payload?.email);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found !');
+  }
+  const isDeleted = user?.is_deleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted ! !');
+  }
+
+  // checking if the user is blocked
+  const userStatus = user?.is_blocked;
+
+  if (userStatus === true) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is blocked !');
+  }
+
+  const decoded = jwt.verify(
+    token,
+    config.jwt_access_secret as string,
+  ) as JwtPayload;
+
+  if (payload.email !== decoded.email) {
+    throw new AppError(httpStatus.FORBIDDEN, 'You are forbidden!');
+  }
+
+  //hash new password
+  const newHashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  await User.findOneAndUpdate(
+    {
+      email: decoded.email,
+      role: decoded.role,
+    },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangedAt: new Date(),
+    },
+  );
+};
+
 export const AuthServices = {
   createOrganization,
   loginUser,
   changePassword,
   refreshToken,
   forgetPassword,
+  resetPassword,
 };
