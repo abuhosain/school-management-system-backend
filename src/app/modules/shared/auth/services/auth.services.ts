@@ -56,7 +56,7 @@ export const createOrganization = async (organization: IOrganization) => {
       expire_at,
     };
 
-    const password = 'Hosain25';
+    const password = organization?.email;
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const userData = {

@@ -22,7 +22,7 @@ const createStudent = async (studentData: IStudent, file: TImageFile) => {
       );
     }
 
-    const password = studentData.roll_no.toString();
+    const password = studentData?.email;
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const userData = {
@@ -36,12 +36,14 @@ const createStudent = async (studentData: IStudent, file: TImageFile) => {
     const user = await User.create([userData], { session });
 
     const student = await Student.create(
-      [{
-        ...studentData,
-        user: user[0]._id,
-        profilePicture: file.path,
-      }],
-      { session }
+      [
+        {
+          ...studentData,
+          user: user[0]._id,
+          profilePicture: file.path,
+        },
+      ],
+      { session },
     );
 
     await session.commitTransaction();
