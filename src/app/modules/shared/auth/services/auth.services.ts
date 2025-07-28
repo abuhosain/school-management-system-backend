@@ -112,6 +112,7 @@ const createOrganization = async (organization: IOrganization) => {
 };
 
 const loginUser = async (payload: ILoginUser) => {
+
   const user: IUser = await User.isUserExistsByEmail(payload?.email);
 
   if (!user) {
@@ -137,6 +138,7 @@ const loginUser = async (payload: ILoginUser) => {
     email: user?.email,
     role: user?.role,
     name: user?.name,
+    organization: user?.organization,
     profilePicture: user?.profilePicture || '',
   };
 
