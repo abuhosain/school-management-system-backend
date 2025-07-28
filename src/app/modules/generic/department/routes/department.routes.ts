@@ -2,11 +2,14 @@ import express from 'express';
 import { DepartmentController } from '../controller/department.controller';
 import auth from '../../../../middleware/auth';
 import { USER_ROLE } from '../../../global/user/user.constance';
+import validateRequest from '../../../../middleware/validateRequest';
+import { DepartmentValidations } from '../validations';
 
 const router = express.Router();
 
 router.post(
   '/create-department',
+  validateRequest(DepartmentValidations.create),
   auth(USER_ROLE.admin, USER_ROLE.teacher),
   DepartmentController.createDepartment,
 );
