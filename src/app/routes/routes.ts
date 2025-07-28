@@ -1,18 +1,13 @@
-import { Router } from "express";
-import { AuthRoutes } from "../modules/shared/auth/routes/auth.routes";
- 
- 
- 
+import { Router } from 'express';
+import { AuthRoutes } from '../modules/shared/auth/routes/auth.routes';
 
 const router = Router();
 
 const moduleRoutes = [
   {
-    path: "/auth",
+    path: '/auth',
     route: AuthRoutes,
   },
-   
- 
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

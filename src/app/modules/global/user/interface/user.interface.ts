@@ -4,6 +4,7 @@ import { USER_ROLE } from '../user.constance';
 export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface IUser {
+  _id?: string;
   email: string;
   password: string;
   role: UserRole;
@@ -13,6 +14,10 @@ export interface IUser {
   is_blocked: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+}
+export interface ILoginUser {
+  email: string
+  password: string
 }
 
 export interface UserModel extends Model<IUser> {

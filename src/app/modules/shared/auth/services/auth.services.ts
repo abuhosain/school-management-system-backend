@@ -8,8 +8,14 @@ import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import dayjs from 'dayjs';
 import { USER_ROLE } from '../../../global/user/user.constance';
+import {
+  ILoginUser,
+  IUser,
+} from '../../../global/user/interface/user.interface';
+import { createToken } from '../auth.utils';
+import config from '../../../../../config';
 
-export const createOrganization = async (organization: IOrganization) => {
+const createOrganization = async (organization: IOrganization) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
@@ -102,6 +108,54 @@ export const createOrganization = async (organization: IOrganization) => {
   }
 };
 
+const loginUser = async (payload: ILoginUser) => {
+  const user: IUser = await User.isUserExistsByEmail(payload?.email);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found');
+  }
+
+  if (user.is_deleted) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Your account is deleted');
+  }
+  if (user.is_blocked) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Your account is blocked');
+  }
+
+  if (!(await User.isUserPasswordMatch(payload?.password, user?.password))) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Incorrect password');
+  }
+
+  // access Granted token and refresh token;
+  //   create token and sent to the client
+
+  const jwtPayload: any = {
+    id: user?._id,
+    email: user?.email,
+    role: user?.role,
+    name: user?.name,
+    profilePicture: user?.profilePicture || '',
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expire_in as string,
+  );
+
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refrsh_expire_in as string,
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
+
 export const AuthServices = {
   createOrganization,
+  loginUser,
 };

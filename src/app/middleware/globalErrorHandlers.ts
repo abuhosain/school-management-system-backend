@@ -12,6 +12,7 @@ const globalErrorHandler: ErrorRequestHandler = async (
   err,
   req,
   res,
+  next
 ): Promise<any> => {
   //setting default values
   let statusCode = 500;

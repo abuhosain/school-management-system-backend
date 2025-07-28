@@ -7,7 +7,6 @@ export const createToken = (
     email: string;
     role: string;
     name: string;
-    userName: string;
     profilePicture: string;
   },
   secret: string,
