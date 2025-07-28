@@ -24,7 +24,19 @@ const getAllStuent = catchAsync(async (req, res) => {
   });
 });
 
+const getAllStuentByOrganization = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const student = await StudentService.getAllStudentsByOrganization(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Students retrieved successfully',
+    data: null,
+  });
+});
+
 export const StudentControllers = {
   getSingleStuent,
   getAllStuent,
+  getAllStuentByOrganization,
 };
