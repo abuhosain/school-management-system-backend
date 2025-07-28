@@ -9,11 +9,22 @@ const getSingleStuent = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Password reset link sent to your email',
+    message: 'Student retrieved successfully',
+    data: null,
+  });
+});
+
+const getAllStuent = catchAsync(async (req, res) => {
+  const student = await StudentService.getAllStudents();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student retrieved successfully',
     data: null,
   });
 });
 
 export const StudentControllers = {
   getSingleStuent,
+  getAllStuent,
 };
