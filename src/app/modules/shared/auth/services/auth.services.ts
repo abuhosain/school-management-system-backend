@@ -12,7 +12,7 @@ import {
   ILoginUser,
   IUser,
 } from '../../../global/user/interface/user.interface';
-import { createToken } from '../auth.utils';
+import { createToken, verifyToken } from '../auth.utils';
 import config from '../../../../../config';
 import { JwtPayload } from 'jsonwebtoken';
 
@@ -205,8 +205,60 @@ const changePassword = async (
   return null;
 };
 
+const refreshToken = async (token: string) => {
+  // checking if the given token is valid
+  const decoded = verifyToken(token, config.jwt_refresh_secret as string);
+
+  const { email, iat } = decoded;
+  // checking if the user is exist
+  const user = await User.isUserExistsByEmail(email);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found !');
+  }
+  // checking if the user is already deleted
+  const isDeleted = user?.is_deleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted ! !');
+  }
+
+  // checking if the user is blocked
+  const userStatus = user?.is_blocked;
+
+  if (userStatus === true) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is blocked !');
+  }
+
+  if (
+    user.passwordChangedAt &&
+    User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
+  ) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !');
+  }
+
+  const jwtPayload: any = {
+    id: user?._id,
+    email: user?.email,
+    role: user?.role,
+    name: user?.name,
+    profilePicture: user?.profilePicture,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expire_in as string,
+  );
+
+  return {
+    accessToken,
+  };
+};
+
 export const AuthServices = {
   createOrganization,
   loginUser,
   changePassword,
+  refreshToken,
 };
