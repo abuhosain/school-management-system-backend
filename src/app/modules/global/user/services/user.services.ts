@@ -7,10 +7,15 @@ import { USER_ROLE } from '../user.constance';
 import bcrypt from 'bcrypt';
 import { Student } from '../../../generic/student/repository/schema/student.schema';
 import { TImageFile } from '../../../../interface/image.interface';
+import { JwtPayload } from 'jsonwebtoken';
 
-const createStudent = async (studentData: IStudent, file: TImageFile) => {
+const createStudent = async (
+  user: JwtPayload,
+  studentData: IStudent,
+  file: TImageFile,
+) => {
   const session = await mongoose.startSession();
-
+  const { organization } = user;
   try {
     session.startTransaction();
 
@@ -31,6 +36,7 @@ const createStudent = async (studentData: IStudent, file: TImageFile) => {
       role: USER_ROLE.student,
       name: studentData.name,
       profilePicture: file?.path,
+      organization: organization,
     };
 
     const user = await User.create([userData], { session });
@@ -41,6 +47,7 @@ const createStudent = async (studentData: IStudent, file: TImageFile) => {
           ...studentData,
           user: user[0]._id,
           profilePicture: file.path,
+          organization: organization,
         },
       ],
       { session },

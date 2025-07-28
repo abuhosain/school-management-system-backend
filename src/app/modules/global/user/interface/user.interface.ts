@@ -5,6 +5,7 @@ export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface IUser {
   _id?: string;
+  organization?: string;
   email: string;
   password: string;
   role: UserRole;

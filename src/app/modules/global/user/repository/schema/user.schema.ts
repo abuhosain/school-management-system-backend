@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import { IUser, UserModel } from '../../interface/user.interface';
 import { USER_ROLE } from '../../user.constance';
 import bcrypt from 'bcrypt';
@@ -7,10 +7,14 @@ import config from '../../../../../../config';
 const userSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, unique: true },
+    organization: {
+      type: Schema.Types.ObjectId,
+      ref: 'Organization',
+    },
     password: { type: String, required: true },
     name: { type: String, required: true },
     profilePicture: { type: String, default: '' },
-    role: { type: String, enum: USER_ROLE, default: 'student' },
+    role: { type: String, enum: USER_ROLE, default: USER_ROLE.student },
     is_deleted: { type: Boolean, default: false },
     is_blocked: { type: Boolean, default: false },
     needsPasswordChange: { type: Boolean, default: true },

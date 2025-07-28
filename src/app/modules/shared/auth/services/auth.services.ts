@@ -67,20 +67,21 @@ const createOrganization = async (organization: IOrganization) => {
     const password = organization?.email;
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const userData = {
-      email: organization.email,
-      password: hashedPassword,
-      role: USER_ROLE.admin,
-      name: organization.name,
-      profilePicture: '',
-    };
-
     // Step 1: Create organization with expire_at
     const createdOrganization = await Organization.create(
       [organizationWithExpiry],
       { session },
     );
     const org = createdOrganization[0];
+
+    const userData = {
+      email: organization.email,
+      password: hashedPassword,
+      role: USER_ROLE.admin,
+      name: organization.name,
+      organization: org?._id,
+      profilePicture: '',
+    };
 
     // Step 2: Create user
     const createdUser = await User.create([userData], { session });
