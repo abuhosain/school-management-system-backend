@@ -13,6 +13,8 @@ const userSchema = new Schema<IUser>(
     role: { type: String, enum: USER_ROLE, default: 'student' },
     is_deleted: { type: Boolean, default: false },
     is_blocked: { type: Boolean, default: false },
+    needsPasswordChange: { type: Boolean, default: true },
+    passwordChangedAt: { type: Date, default: Date.now },
   },
   {
     timestamps: true,

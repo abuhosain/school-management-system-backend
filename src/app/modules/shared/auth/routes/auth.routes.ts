@@ -10,6 +10,19 @@ router.post(
   auth(USER_ROLE.super_admin),
   AuthController.createOrganization,
 );
+
 router.post('/login', AuthController.loginUser);
+
+router.post(
+  '/change-password',
+  auth(
+    USER_ROLE.super_admin,
+    USER_ROLE.admin,
+    USER_ROLE.staff,
+    USER_ROLE.student,
+    USER_ROLE.teacher,
+  ),
+  AuthController.changePassword,
+);
 
 export const AuthRoutes = router;

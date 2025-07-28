@@ -14,10 +14,12 @@ export interface IUser {
   is_blocked: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  needsPasswordChange: boolean;
+  passwordChangedAt?: Date;
 }
 export interface ILoginUser {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface UserModel extends Model<IUser> {

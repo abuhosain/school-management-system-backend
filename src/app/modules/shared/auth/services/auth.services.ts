@@ -14,6 +14,7 @@ import {
 } from '../../../global/user/interface/user.interface';
 import { createToken } from '../auth.utils';
 import config from '../../../../../config';
+import { JwtPayload } from 'jsonwebtoken';
 
 const createOrganization = async (organization: IOrganization) => {
   const session = await mongoose.startSession();
@@ -152,10 +153,60 @@ const loginUser = async (payload: ILoginUser) => {
   return {
     accessToken,
     refreshToken,
+    needsPasswordChange: user?.needsPasswordChange,
   };
+};
+
+const changePassword = async (
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string },
+) => {
+  const user = await User.isUserExistsByEmail(userData.email);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found');
+  }
+
+  const isDeleted = user?.is_deleted;
+
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted !');
+  }
+
+  const userStatus = user?.is_blocked;
+
+  if (userStatus === true) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is blocked !');
+  }
+
+  //checking if the password is correct
+
+  if (!(await User.isUserPasswordMatch(payload.oldPassword, user?.password)))
+    throw new AppError(httpStatus.FORBIDDEN, 'Password is incorrect !');
+
+  //hash new password
+  const newHashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  await User.findOneAndUpdate(
+    {
+      email: userData?.email,
+      role: userData?.role,
+    },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangedAt: new Date(),
+    },
+  );
+
+  return null;
 };
 
 export const AuthServices = {
   createOrganization,
   loginUser,
+  changePassword,
 };

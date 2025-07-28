@@ -1,3 +1,4 @@
+import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../../../utils/catchAsynch';
 import sendResponse from '../../../../utils/sendResponse';
 import { AuthServices } from '../services/auth.services';
@@ -25,7 +26,20 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const userData = req.user;
+  const payload = req.body;
+  await AuthServices.changePassword(userData as JwtPayload, payload);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password changed successfully',
+    data: null,
+  });
+});
+
 export const AuthController = {
   createOrganization,
   loginUser,
+  changePassword,
 };
