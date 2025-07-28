@@ -1,7 +1,9 @@
+import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../../../utils/catchAsynch';
 import sendResponse from '../../../../utils/sendResponse';
 import { StudentService } from '../services/student.services';
 import httpStatus from 'http-status';
+import { TImageFile } from '../../../../interface/image.interface';
 
 const getSingleStuent = catchAsync(async (req, res) => {
   const { id } = req.params;
@@ -35,8 +37,26 @@ const getAllStuentByOrganization = catchAsync(async (req, res) => {
   });
 });
 
+const updateStuent = catchAsync(async (req, res) => {
+  const payload = req.body;
+  const file = req.file;
+  const user = req.user;
+  const student = await StudentService.updateStudent(
+    user as JwtPayload,
+    payload,
+    file as TImageFile,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Students retrieved successfully',
+    data: student,
+  });
+});
+
 export const StudentControllers = {
   getSingleStuent,
   getAllStuent,
   getAllStuentByOrganization,
+  updateStuent,
 };

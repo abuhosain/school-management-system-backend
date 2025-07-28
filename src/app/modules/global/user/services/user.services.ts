@@ -46,7 +46,7 @@ const createStudent = async (
         {
           ...studentData,
           user: user[0]._id,
-          profilePicture: file.path,
+          profilePicture: file?.path,
           organization: organization,
         },
       ],
