@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.get('/:id', TeacherControllers.getSingleTeacher);
 
+router.get('/', TeacherControllers.getAllTeachers);
+
 export const TeacherRoutes = router;

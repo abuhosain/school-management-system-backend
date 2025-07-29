@@ -14,6 +14,17 @@ const getSingleTeacher = catchAsync(async (req, res) => {
   });
 });
 
+const getAllTeachers = catchAsync(async (req, res) => {
+  const student = await TeacherServices.getAllTeachers();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student retrieved successfully',
+    data: student,
+  });
+});
+
 export const TeacherControllers = {
   getSingleTeacher,
+  getAllTeachers,
 };

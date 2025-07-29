@@ -8,6 +8,12 @@ const getSingleTeacher = async (id: string) => {
   return result;
 };
 
+const getAllTeachers = async () => {
+  const result = await Teacher.find();
+  return result;
+};
+
 export const TeacherServices = {
   getSingleTeacher,
+  getAllTeachers,
 };
