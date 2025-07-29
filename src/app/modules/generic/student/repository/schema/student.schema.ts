@@ -22,7 +22,7 @@ const studentSchema = new Schema<IStudent>(
     roll_no: { type: Number, required: true },
     reg_no: { type: Number, required: true },
     class: { type: Number, required: true },
-    group: { type: String, required: true, trim: true },
+    group: { type: String, trim: true },
     session: { type: Number, required: true },
     gender: { type: String, enum: ['Male', 'Female'], required: true },
     dob: { type: Date, required: true },

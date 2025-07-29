@@ -14,7 +14,7 @@ export const studentZodSchema = z.object({
     roll_no: z.number(),
     reg_no: z.number(),
     class: z.number(),
-    group: z.string().min(1, 'Group is required'),
+    group: z.string().optional(),
     session: z.number(),
     gender: z.enum(['Male', 'Female']),
     dob: z.date().min(1, 'Date of birth is required'),  

@@ -12,7 +12,7 @@ export interface IStudent {
   roll_no: number;
   reg_no: number;
   class: number;
-  group: string;
+  group?: string;
   session: number;
   gender: 'Male' | 'Female';
   dob: Date;

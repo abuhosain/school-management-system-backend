@@ -6,9 +6,7 @@ const statusEnum = z.enum(['present', 'absent', 'late', 'leave']);
 
 export const attendanceZodSchema = z.object({
   body: z.object({
-    organization: objectId,
     student: objectId,
-    date: z.date(),
     status: statusEnum,
   }),
 });

@@ -11,7 +11,7 @@ const attendanceSchema = new Schema<IAttendance>(
     student: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
     class: { type: Number, required: true },
     session: { type: Number, required: true },
-    date: { type: Date, required: true },
+    date: { type: Date, required: true, default : Date.now },
     status: {
       type: String,
       enum: ['present', 'absent', 'late', 'leave'],
