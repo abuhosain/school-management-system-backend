@@ -7,4 +7,6 @@ router.get('/:id', TeacherControllers.getSingleTeacher);
 
 router.get('/', TeacherControllers.getAllTeachers);
 
+router.get('/organization/:id', TeacherControllers.getAllTeacherByOrganization);
+
 export const TeacherRoutes = router;

@@ -9,7 +9,7 @@ const getSingleTeacher = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Student retrieved successfully',
+    message: 'Teacher retrieved successfully',
     data: teacher,
   });
 });
@@ -19,7 +19,18 @@ const getAllTeachers = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Student retrieved successfully',
+    message: 'Teacher retrieved successfully',
+    data: student,
+  });
+});
+
+const getAllTeacherByOrganization = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const student = await TeacherServices.getAllTeachersByOrganization(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Teacher retrieved successfully',
     data: student,
   });
 });
@@ -27,4 +38,5 @@ const getAllTeachers = catchAsync(async (req, res) => {
 export const TeacherControllers = {
   getSingleTeacher,
   getAllTeachers,
+  getAllTeacherByOrganization,
 };

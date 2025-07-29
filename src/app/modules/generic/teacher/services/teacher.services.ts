@@ -13,7 +13,13 @@ const getAllTeachers = async () => {
   return result;
 };
 
+const getAllTeachersByOrganization = async (organizationId: string) => {
+  const result = await Teacher.find({ organization: organizationId });
+  return result;
+};
+
 export const TeacherServices = {
   getSingleTeacher,
   getAllTeachers,
+  getAllTeachersByOrganization,
 };
