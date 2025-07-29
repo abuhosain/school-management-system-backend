@@ -19,6 +19,18 @@ const createAttendance = catchAsync(async (req, res) => {
   });
 });
 
+const getAttendanceByStudent = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await AttendanceServices.getAttendanceByStudent(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Attendance fetched succesfully!',
+    data: result,
+  });
+});
+
 export const AttendanceControllers = {
   createAttendance,
+  getAttendanceByStudent
 };

@@ -8,7 +8,7 @@ import httpStatus from 'http-status';
 const createAttendance = async (user: JwtPayload, payload: IAttendance) => {
   const { organization } = user;
   const student = await Student.findById(payload?.student);
-  
+
   if (!student) {
     throw new AppError(httpStatus.NOT_FOUND, 'Student not found');
   }
@@ -30,6 +30,13 @@ const createAttendance = async (user: JwtPayload, payload: IAttendance) => {
   return createdAttendance;
 };
 
+const getAttendanceByStudent = async (id: string) => {
+  const result = await Attendance.find({ student: id });
+  return result;
+};
+
+
 export const AttendanceServices = {
   createAttendance,
+  getAttendanceByStudent,
 };

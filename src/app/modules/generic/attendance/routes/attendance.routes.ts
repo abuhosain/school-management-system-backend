@@ -14,4 +14,6 @@ router.post(
   AttendanceControllers.createAttendance,
 );
 
+router.get('/student/:id', AttendanceControllers.getAttendanceByStudent);
+
 export const AttendanceRoutes = router;
