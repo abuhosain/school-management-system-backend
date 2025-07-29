@@ -7,16 +7,7 @@ import { Department } from '../repository/schema/department.schema';
 
 const createDepartment = async (user: JwtPayload, department: IDepartment) => {
   const { name } = department;
-  const { id, role } = user;
-  let organization;
-  if (role == USER_ROLE.admin) {
-    const admin = await Admin.findById(id);
-    organization = admin?.organization;
-  }
-  if (role == USER_ROLE.teacher) {
-    const teacher = await Teacher.findById(id);
-    organization = teacher?.organization;
-  }
+  const { organization } = user;
 
   const isDepartmentExists = await Department.findOne({
     name,
