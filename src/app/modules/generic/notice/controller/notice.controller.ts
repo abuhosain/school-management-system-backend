@@ -3,6 +3,7 @@ import catchAsync from '../../../../utils/catchAsynch';
 import { NoticeServices } from '../services/notice.services';
 import { TImageFile } from '../../../../interface/image.interface';
 import sendResponse from '../../../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 const createNotice = catchAsync(async (req, res) => {
   const { user } = req;
@@ -15,13 +16,25 @@ const createNotice = catchAsync(async (req, res) => {
     file as TImageFile,
   );
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: httpStatus.OK,
     success: true,
     message: 'Notice created successfully',
     data: result,
   });
 });
 
+const getSingleNotice = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await NoticeServices.getSingleNotice(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Notice retrieved successfully',
+    data: result,
+  });
+});
+
 export const NoticeController = {
   createNotice,
+  getSingleNotice,
 };

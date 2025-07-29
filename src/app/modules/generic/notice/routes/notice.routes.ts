@@ -13,4 +13,9 @@ router.post(
   NoticeController.createNotice,
 );
 
+router.get(
+  '/:id',
+  NoticeController.getSingleNotice,
+);
+
 export const noticeRoutes = router;
