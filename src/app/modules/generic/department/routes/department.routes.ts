@@ -27,4 +27,11 @@ router.get(
 
 router.get('/:id', DepartmentController.getSingleDepartment);
 
+router.put(
+  '/:id',
+  validateRequest(DepartmentValidations.update),
+  auth(USER_ROLE.admin, USER_ROLE.teacher),
+  DepartmentController.updateDepartment,
+);
+
 export const DepartmentRoutes = router;

@@ -51,9 +51,23 @@ const getSingleDepartment = catchAsync(async (req, res) => {
   });
 });
 
+const updateDepartment = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const user = req.user as JwtPayload;
+  const data = req.body;
+  const result = await DepartmentServices.updateDepartment(id, user, data);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Department updated successfully!',
+    data: result,
+  });
+});
+
 export const DepartmentController = {
   createDepartment,
   getAllDepartmentByOrganizationId,
   getAllDepartment,
   getSingleDepartment,
+  updateDepartment,
 };

@@ -1,8 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { IDepartment } from '../interface/department.interface';
-import { USER_ROLE } from '../../../global/user/user.constance';
-import { Admin } from '../../admin/repository/schema/admin.schema';
-import { Teacher } from '../../teacher/repository/schema/teacher.schema';
 import { Department } from '../repository/schema/department.schema';
 
 const createDepartment = async (user: JwtPayload, department: IDepartment) => {
@@ -44,9 +41,28 @@ const getSingleDepartment = async (id: string) => {
   return result;
 };
 
+const updateDepartment = async (
+  id: string,
+  user: JwtPayload,
+  data: Partial<IDepartment>,
+) => {
+  const { organization } = user;
+  const updatedDepartment = await Department.findOneAndUpdate(
+    { _id: id, organization },
+    data,
+    { new: true },
+  );
+
+  if (!updatedDepartment) {
+    throw new Error('Department not found');
+  }
+  return updatedDepartment;
+};
+
 export const DepartmentServices = {
   createDepartment,
   getAllDepartmentByOrgnazationId,
   getAllDepartment,
   getSingleDepartment,
+  updateDepartment,
 };
