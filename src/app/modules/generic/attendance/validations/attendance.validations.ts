@@ -8,12 +8,8 @@ export const attendanceZodSchema = z.object({
   body: z.object({
     organization: objectId,
     student: objectId,
-    class: z.number(),
-    session: z.number(),
     date: z.date(),
     status: statusEnum,
-    department: objectId,
-    group: z.string().min(1, 'Group is required'),
   }),
 });
 

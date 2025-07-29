@@ -10,7 +10,7 @@ export interface IAttendance {
   date: Date;
   status: AttendanceStatus;
   department: Types.ObjectId;
-  group: string;
+  group?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -22,7 +22,7 @@ const attendanceSchema = new Schema<IAttendance>(
       ref: 'Department',
       required: true,
     },
-    group: { type: String, required: true, trim: true },
+    group: { type: String,   trim: true },
   },
   {
     timestamps: true,
