@@ -5,7 +5,6 @@ const objectId = z.instanceof(Types.ObjectId);
 
 export const noticeZodSchema = z.object({
   body: z.object({
-    organization: objectId,
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
   }),
