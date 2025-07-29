@@ -35,8 +35,13 @@ const getAttendanceByStudent = async (id: string) => {
   return result;
 };
 
+const getAttendanceByOrganization = async (id: string) => {
+  const result = await Attendance.find({ organization: id });
+  return result;
+};
 
 export const AttendanceServices = {
   createAttendance,
   getAttendanceByStudent,
+  getAttendanceByOrganization,
 };
