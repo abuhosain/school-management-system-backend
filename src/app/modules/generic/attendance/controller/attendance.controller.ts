@@ -41,8 +41,26 @@ const getAttendanceByOrganization = catchAsync(async (req, res) => {
   });
 });
 
+const updateAttendance = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+  const payload = req.body;
+  const result = await AttendanceServices.updateAttendance(
+    user as JwtPayload,
+    id,
+    payload,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Attendance updated succesfully!',
+    data: result,
+  });
+});
+
 export const AttendanceControllers = {
   createAttendance,
   getAttendanceByStudent,
   getAttendanceByOrganization,
+  updateAttendance,
 };

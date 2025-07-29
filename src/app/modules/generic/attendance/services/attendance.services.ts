@@ -40,8 +40,26 @@ const getAttendanceByOrganization = async (id: string) => {
   return result;
 };
 
+const updateAttendance = async (
+  user: JwtPayload,
+  id: string,
+  payload: IAttendance,
+) => {
+  const { organization } = user;
+  const updateAttendance = await Attendance.findOneAndUpdate(
+    {
+      _id: id,
+      organization,
+    },
+    payload,
+    { new: true },
+  );
+  return updateAttendance;
+};
+
 export const AttendanceServices = {
   createAttendance,
   getAttendanceByStudent,
   getAttendanceByOrganization,
+  updateAttendance,
 };

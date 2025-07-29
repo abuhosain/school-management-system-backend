@@ -15,9 +15,17 @@ router.post(
 );
 
 router.get('/student/:id', AttendanceControllers.getAttendanceByStudent);
+
 router.get(
   '/organization/:id',
   AttendanceControllers.getAttendanceByOrganization,
+);
+
+router.put(
+  '/:id',
+  auth(USER_ROLE.staff, USER_ROLE.teacher, USER_ROLE.teacher),
+  validateRequest(AttendanceValidations.update),
+  AttendanceControllers.updateAttendance,
 );
 
 export const AttendanceRoutes = router;
