@@ -13,9 +13,15 @@ router.post(
   NoticeController.createNotice,
 );
 
-router.get(
-  '/:id',
-  NoticeController.getSingleNotice,
+router.get('/:id', NoticeController.getSingleNotice);
+
+router.get('/organization/:id', NoticeController.getNoticeByOrgnization);
+
+router.put(
+  '/',
+  auth(USER_ROLE.admin, USER_ROLE.teacher, USER_ROLE.staff),
+  validateRequest(NoticeValidations.update),
+  NoticeController.updateNotice,
 );
 
 export const noticeRoutes = router;

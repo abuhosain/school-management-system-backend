@@ -34,7 +34,39 @@ const getSingleNotice = catchAsync(async (req, res) => {
   });
 });
 
+const getNoticeByOrgnization = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await NoticeServices.getNoticeByOrganization(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Notice retrieved successfully',
+    data: result,
+  });
+});
+
+const updateNotice = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+  const file = req.file;
+  const payload = req.body;
+  const result = await NoticeServices.updateNotice(
+    user as JwtPayload,
+    id,
+    payload,
+    file as TImageFile
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Notice updaated successfully',
+    data: result,
+  });
+});
+
 export const NoticeController = {
   createNotice,
   getSingleNotice,
+  getNoticeByOrgnization,
+  updateNotice,
 };

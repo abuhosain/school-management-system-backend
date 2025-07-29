@@ -29,7 +29,43 @@ const getSingleNotice = async (id: string) => {
   return result;
 };
 
+const getNoticeByOrganization = async (id: string) => {
+  const result = await Notice.find({ organization: id });
+  return result;
+};
+
+const updateNotice = async (
+  user: JwtPayload,
+  id: string,
+  payload: INotice,
+  file: TImageFile,
+) => {
+  const { organization } = user;
+  let updatedPayload = payload;
+
+  if (file?.path) {
+    updatedPayload = {
+      ...payload,
+      image: file.path,
+    };
+  }
+
+  const update = await Notice.findOneAndUpdate(
+    { _id: id, organization },
+    updatedPayload,
+    { new: true },
+  );
+
+  if (!update) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Notice not found');
+  }
+
+  return update;
+};
+
 export const NoticeServices = {
   createNotice,
   getSingleNotice,
+  getNoticeByOrganization,
+  updateNotice,
 };
