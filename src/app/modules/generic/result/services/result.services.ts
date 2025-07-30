@@ -5,7 +5,7 @@ import { Student } from '../../student/repository/schema/student.schema';
 import AppError from '../../../../errors/AppError';
 import { Result } from '../repository/schema/result.schema';
 
-export const createResult = async (user: JwtPayload, payload: IResult) => {
+const createResult = async (user: JwtPayload, payload: IResult) => {
   const { organization } = user;
 
   const student = await Student.findById(payload.student);
@@ -58,8 +58,39 @@ const getResultByStudent = async (id: string) => {
   return result;
 };
 
+const getPublicResult = async ({
+  exam_name,
+  class: classNumber,
+  session,
+  year,
+  roll_no,
+}: {
+  exam_name: string;
+  class: number;
+  session: number;
+  year: number;
+  roll_no: number;
+}) => {
+  
+
+  const result = await Result.findOne({
+    roll_no,
+    class: classNumber,
+    session,
+    exam_name,
+    year,
+  }).populate('student');
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Result not found');
+  }
+
+  return result;
+};
+
 export const ResultServices = {
   createResult,
   getAllResultByOrganization,
   getResultByStudent,
+  getPublicResult
 };

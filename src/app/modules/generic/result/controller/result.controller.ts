@@ -41,8 +41,27 @@ const getResultByStudent = catchAsync(async (req, res) => {
   });
 });
 
+const getPublicResult = catchAsync(async (req, res) => {
+  const { exam_name, class: classNumber, session, year, roll_no } = req.query;
+  const result = await ResultServices.getPublicResult({
+    exam_name: exam_name as string,
+    class: Number(classNumber),
+    session: Number(session),
+    year: Number(year),
+    roll_no: Number(roll_no),
+  });
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Result fetched successfully',
+    data: result,
+  });
+});
+
 export const ResultController = {
   creteResult,
   getAllResultByOrganization,
-  getResultByStudent
+  getResultByStudent,
+  getPublicResult,
 };

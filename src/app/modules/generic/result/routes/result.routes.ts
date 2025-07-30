@@ -18,5 +18,6 @@ router.post(
 router.get('/organization/:id', ResultController.getAllResultByOrganization);
 
 router.get('/student', ResultController.getResultByStudent);
+router.get('/public', ResultController.getPublicResult);
 
 export const ResultRoutes = router;
