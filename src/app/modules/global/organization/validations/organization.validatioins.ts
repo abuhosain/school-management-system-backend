@@ -18,7 +18,7 @@ export const organizationZodSchema = z.object({
     phone: z
       .number()
       .int('Phone number must be an integer')
-      .min(1000000000, 'Phone number must be at least 10 digits'),
+      .min(100000000, 'Phone number must be at least 9 digits'),
     address: z.string().min(1, 'Address is required'),
     plan_type: planTypeEnum,
     subscription_status: subscriptionStatusEnum,

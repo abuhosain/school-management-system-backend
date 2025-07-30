@@ -1,11 +1,9 @@
 // src/app/utils/initSuperAdmin.ts
 
-import config from "../../config";
-import { SuperAdmin } from "../modules/generic/super-admin/repository/schema/super-admin.schema";
-import { User } from "../modules/global/user/repository/schema/user.schema";
-import { USER_ROLE } from "../modules/global/user/user.constance";
-
- 
+import config from '../../config';
+import { SuperAdmin } from '../modules/generic/super-admin/repository/schema/super-admin.schema';
+import { User } from '../modules/global/user/repository/schema/user.schema';
+import { USER_ROLE } from '../modules/global/user/user.constance';
 
 export const initSuperAdmin = async () => {
   const existingSuperAdmin = await SuperAdmin.findOne({
@@ -21,7 +19,8 @@ export const initSuperAdmin = async () => {
   const user = await User.create({
     email: config.super_admin_email,
     password: config.super_admin_password,
-    role: USER_ROLE.super_admin, 
+    role: USER_ROLE.super_admin,
+    name: config.super_admin_name,
   });
 
   // Step 2: Create SuperAdmin document

@@ -86,12 +86,11 @@ const createTeacher = async (
       );
     }
 
-    const password = teacherData?.email;
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const password = teacherData?.email; 
 
     const userData = {
       email: teacherData.email,
-      password: hashedPassword,
+      password: password,
       role: USER_ROLE.student,
       name: teacherData.name,
       profilePicture: file?.path,

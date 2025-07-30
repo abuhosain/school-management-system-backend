@@ -22,25 +22,36 @@ const createOrganization = async (organization: IOrganization) => {
   try {
     session.startTransaction();
 
-    const existingOrganization = await Organization.findOne(
-      {
-        $or: [
-          { customdomain: organization?.customdomain },
-          { subdomain: organization?.subdomain },
-          { email: organization?.email },
-        ],
-      },
-      { session },
-    );
+    const [emailExists, subdomainExists, customDomainExists] =
+      await Promise.all([
+        Organization.findOne({ email: organization?.email }),
+        Organization.findOne({ subdomain: organization?.subdomain }),
+        Organization.findOne({
+          customdomain: organization?.customdomain,
+        }),
+      ]);
 
-    if (existingOrganization) {
+    if (emailExists) {
       throw new AppError(
-        httpStatus.FOUND,
-        'Organization with this email, subdomain or custom domain already exists',
+        httpStatus.CONFLICT,
+        'Organization with this email already exists',
       );
     }
 
-    // ✅ Determine expire_at based on plan_type
+    if (subdomainExists) {
+      throw new AppError(
+        httpStatus.CONFLICT,
+        'Organization with this subdomain already exists',
+      );
+    }
+
+    if (customDomainExists) {
+      throw new AppError(
+        httpStatus.CONFLICT,
+        'Organization with this custom domain already exists',
+      );
+    }
+
     let expire_at: Date;
     const now = new Date();
 
@@ -58,16 +69,13 @@ const createOrganization = async (organization: IOrganization) => {
         throw new AppError(httpStatus.BAD_REQUEST, 'Invalid plan type');
     }
 
-    // Add expire_at to organization object
     const organizationWithExpiry = {
       ...organization,
       expire_at,
     };
 
-    const password = organization?.email;
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const password = organization.email;
 
-    // Step 1: Create organization with expire_at
     const createdOrganization = await Organization.create(
       [organizationWithExpiry],
       { session },
@@ -76,18 +84,16 @@ const createOrganization = async (organization: IOrganization) => {
 
     const userData = {
       email: organization.email,
-      password: hashedPassword,
+      password: password,
       role: USER_ROLE.admin,
       name: organization.name,
-      organization: org?._id,
+      organization: org._id,
       profilePicture: '',
     };
 
-    // Step 2: Create user
     const createdUser = await User.create([userData], { session });
     const user = createdUser[0];
 
-    // Step 3: Create admin linked to user and organization
     await Admin.create(
       [
         {
@@ -112,7 +118,6 @@ const createOrganization = async (organization: IOrganization) => {
 };
 
 const loginUser = async (payload: ILoginUser) => {
-
   const user: IUser = await User.isUserExistsByEmail(payload?.email);
 
   if (!user) {

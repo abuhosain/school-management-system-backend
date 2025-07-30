@@ -2,12 +2,15 @@ import express from 'express';
 import { AuthController } from '../controller/auth.controller';
 import auth from '../../../../middleware/auth';
 import { USER_ROLE } from '../../../global/user/user.constance';
+import validateRequest from '../../../../middleware/validateRequest';
+import { organizationValidations } from '../../../global/organization/validations';
 
 const router = express.Router();
 
 router.post(
   '/create-organization',
   auth(USER_ROLE.super_admin),
+  validateRequest(organizationValidations.create),
   AuthController.createOrganization,
 );
 
