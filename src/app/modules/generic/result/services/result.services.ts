@@ -71,8 +71,6 @@ const getPublicResult = async ({
   year: number;
   roll_no: number;
 }) => {
-  
-
   const result = await Result.findOne({
     roll_no,
     class: classNumber,
@@ -88,9 +86,55 @@ const getPublicResult = async ({
   return result;
 };
 
+const updateResult = async (
+  user: JwtPayload,
+  resultId: string,
+  payload: Partial<IResult>,
+) => {
+  const { organization } = user;
+
+  const existingResult = await Result.findOne({
+    _id: resultId,
+    organization,
+  });
+
+  if (!existingResult) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Result not found');
+  }
+
+  const student = await Student.findById(existingResult.student);
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student not found');
+  }
+
+  const totalMarks = payload.results
+    ? payload.results.reduce((sum: number, item: any) => sum + item.marks, 0)
+    : existingResult.total_marks;
+
+  const updatedData: Partial<IResult> = {
+    exam_name: payload.exam_name || existingResult.exam_name,
+    year: payload.year || existingResult.year,
+    class: student.class,
+    session: student.session,
+    group: student.group,
+    results: payload.results || existingResult.results,
+    total_marks: totalMarks,
+    gpa: payload.gpa || existingResult.gpa,
+    grade: payload.grade || existingResult.grade,
+    is_passed: payload.is_passed ?? existingResult.is_passed,
+  };
+
+  const updatedResult = await Result.findByIdAndUpdate(resultId, updatedData, {
+    new: true,
+  });
+
+  return updatedResult;
+};
+
 export const ResultServices = {
   createResult,
   getAllResultByOrganization,
   getResultByStudent,
-  getPublicResult
+  getPublicResult,
+  updateResult,
 };

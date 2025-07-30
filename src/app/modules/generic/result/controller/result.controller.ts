@@ -59,9 +59,28 @@ const getPublicResult = catchAsync(async (req, res) => {
   });
 });
 
+const updateResult = catchAsync(async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  const payload = req.body;
+  const result = await ResultServices.updateResult(
+    user as JwtPayload,
+    id,
+    payload,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Result Updated successfully',
+    data: result,
+  });
+});
+
 export const ResultController = {
   creteResult,
   getAllResultByOrganization,
   getResultByStudent,
   getPublicResult,
+  updateResult,
 };
