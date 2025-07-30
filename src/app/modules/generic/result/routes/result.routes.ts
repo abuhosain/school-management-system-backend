@@ -3,13 +3,18 @@ import router from '../../../../routes/routes';
 import auth from '../../../../middleware/auth';
 import { USER_ROLE } from '../../../global/user/user.constance';
 import { ResultController } from '../controller/result.controller';
+import validateRequest from '../../../../middleware/validateRequest';
+import { ResultValidatoin } from '../validation';
 
 const ruoter = express.Router();
 
 router.post(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.staff, USER_ROLE.teacher),
+  validateRequest(ResultValidatoin.create),
   ResultController.creteResult,
 );
+
+
 
 export const ResultRoutes = router;

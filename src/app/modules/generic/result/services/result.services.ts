@@ -34,7 +34,7 @@ export const createResult = async (user: JwtPayload, payload: IResult) => {
 
     gpa: payload.gpa,
     grade: payload.grade,
-    is_passed: payload.is_passed,
+    is_passed: payload?.is_passed,
   };
 
   const createdResult = await Result.create(resultData);

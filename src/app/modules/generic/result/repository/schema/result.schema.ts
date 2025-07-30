@@ -70,6 +70,7 @@ const resultSchema = new Schema<IResult>(
     is_passed: {
       type: Boolean,
       required: true,
+      default : true
     },
   },
   {
