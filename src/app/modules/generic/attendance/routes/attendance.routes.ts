@@ -27,5 +27,5 @@ router.put(
   validateRequest(AttendanceValidations.update),
   AttendanceControllers.updateAttendance,
 );
-
+  
 export const AttendanceRoutes = router;
