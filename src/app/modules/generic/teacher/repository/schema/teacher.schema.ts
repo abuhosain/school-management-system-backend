@@ -20,7 +20,7 @@ const teacherSchema = new Schema<ITeacher>(
     ephone: { type: Number, required: true, unique: true },
     profilePicture: { type: String, default: '' },
     designation: { type: String, required: true, trim: true },
-    join_date: { type: Date, required: true },
+    join_date: { type: Date, required: true, default: Date.now },
   },
   {
     timestamps: true,

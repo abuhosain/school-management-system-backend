@@ -86,7 +86,7 @@ const createTeacher = async (
       );
     }
 
-    const password = teacherData?.email; 
+    const password = teacherData?.email;
 
     const userData = {
       email: teacherData.email,
