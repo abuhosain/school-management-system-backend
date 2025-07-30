@@ -1,0 +1,15 @@
+import express from 'express';
+import router from '../../../../routes/routes';
+import auth from '../../../../middleware/auth';
+import { USER_ROLE } from '../../../global/user/user.constance';
+import { ResultController } from '../controller/result.controller';
+
+const ruoter = express.Router();
+
+router.post(
+  '/',
+  auth(USER_ROLE.admin, USER_ROLE.staff, USER_ROLE.teacher),
+  ResultController.creteResult,
+);
+
+export const ResultRoutes = router;

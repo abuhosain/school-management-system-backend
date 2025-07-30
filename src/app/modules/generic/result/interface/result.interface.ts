@@ -19,7 +19,7 @@ export interface IResult {
   year: number;
   class: number;
   session: number;
-  group: string;
+  group?: string;
 
   results: {
     subject: string;

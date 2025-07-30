@@ -41,7 +41,6 @@ const resultSchema = new Schema<IResult>(
     },
     group: {
       type: String,
-      required: true,
     },
     results: [
       {
