@@ -14,11 +14,35 @@ const creteResult = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Students retrieved successfully',
+    message: 'Result created successfully',
     data: student,
+  });
+});
+
+const getAllResultByOrganization = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await ResultServices.getAllResultByOrganization(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Result retrieved successfully',
+    data: result,
+  });
+});
+
+const getResultByStudent = catchAsync(async (req, res) => {
+  const user = req.user;
+  const result = await ResultServices.getResultByStudent(user?.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Result retrieved successfully',
+    data: result,
   });
 });
 
 export const ResultController = {
   creteResult,
+  getAllResultByOrganization,
+  getResultByStudent
 };

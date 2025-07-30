@@ -41,6 +41,25 @@ export const createResult = async (user: JwtPayload, payload: IResult) => {
   return createdResult;
 };
 
+const getAllResultByOrganization = async (id: string) => {
+  const result = await Result.find({ organization: id });
+  return result;
+};
+
+const getResultByStudent = async (id: string) => {
+  const student = await Student.findOne({ user: id });
+
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student Not found');
+  }
+  const result = await Result.find({ student: student?._id }).populate(
+    'student',
+  );
+  return result;
+};
+
 export const ResultServices = {
   createResult,
+  getAllResultByOrganization,
+  getResultByStudent,
 };

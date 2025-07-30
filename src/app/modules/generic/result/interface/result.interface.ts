@@ -20,7 +20,7 @@ export interface IResult {
   class: number;
   session: number;
   group?: string;
-
+  
   results: {
     subject: string;
     marks: number;

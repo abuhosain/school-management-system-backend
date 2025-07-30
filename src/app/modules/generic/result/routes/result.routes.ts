@@ -15,6 +15,8 @@ router.post(
   ResultController.creteResult,
 );
 
+router.get('/organization/:id', ResultController.getAllResultByOrganization);
 
+router.get('/student', ResultController.getResultByStudent);
 
 export const ResultRoutes = router;
