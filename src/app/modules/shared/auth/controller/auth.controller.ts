@@ -19,11 +19,24 @@ const createOrganization = catchAsync(async (req, res) => {
 const loginUser = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await AuthServices.loginUser(payload);
+  const { refreshToken, accessToken, needsPasswordChange  } = result;
+
+  res.cookie("refreshToken", refreshToken, {
+    secure: false,
+    httpOnly: true,
+  });
+
+  const data = {
+    accessToken,
+    needsPasswordChange
+  }
+
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User logged in successfully',
-    data: result,
+    data: data,
   });
 });
 
